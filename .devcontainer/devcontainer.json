@@ -1,0 +1,36 @@
+{
+    "name": "N8N Arch Workspace",
+    "dockerComposeFile": ["docker-compose.yml", "${localEnv:DOCKER_COMPOSE_FILE:docker-compose.yml}"],
+    "service": "n8n-workspace",
+    "shutdownAction": "stopCompose",
+    "workspaceFolder": "/workspace/n8n-stack",
+    "remoteUser": "abc",
+    "remoteEnv": {
+        "REPO_URL": "git@github.com:zyrakq/n8n-stack.git",
+        "WORKSPACE_FOLDER": "/workspace/n8n-stack"
+    },
+    "forwardPorts": ["n8n:5678"],
+    "postCreateCommand": "/setup_container.sh && /clone-repo.sh",
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                // VSCode
+                "vscode-icons-team.vscode-icons",
+                "aaron-bond.better-comments",
+                "IBM.output-colorizer",
+                "bierner.markdown-mermaid",
+
+                // Docker
+                "ms-azuretools.vscode-docker",
+
+                // Git
+                "eamodio.gitlens",
+                "codezombiech.gitignore"
+
+            ],
+            "settings": {
+                "workbench.iconTheme": "vscode-icons"
+            }
+        }
+    }
+}
