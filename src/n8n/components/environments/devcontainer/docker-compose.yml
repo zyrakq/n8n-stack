@@ -1,8 +1,0 @@
-services:
-  n8n:
-    networks:
-      - n8n-workspace-network
-
-networks:
-  n8n-workspace-network:
-    external: true

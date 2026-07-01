@@ -10,5 +10,8 @@
   },
   "[dockerfile]": {
     "editor.formatOnSave": false
+  },
+  "files.exclude": {
+    "**/.git": false
   }
 }

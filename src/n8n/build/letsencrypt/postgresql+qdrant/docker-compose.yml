@@ -1,0 +1,51 @@
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: ${LOG_MAX_SIZE:-10m}
+    max-file: ${LOG_MAX_FILE:-3}
+    compress: ${LOG_COMPRESS:-true}
+services:
+  n8n:
+    container_name: n8n
+    image: ${IMAGE:-n8nio/n8n:latest}
+    restart: unless-stopped
+    logging: *default-logging
+    environment:
+      N8N_DIAGNOSTICS_ENABLED: ${N8N_DIAGNOSTICS_ENABLED:-false}
+      N8N_PERSONALIZATION_ENABLED: ${N8N_PERSONALIZATION_ENABLED:-false}
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY:-}
+      N8N_USER_MANAGEMENT_JWT_SECRET: ${N8N_USER_MANAGEMENT_JWT_SECRET:-}
+      VIRTUAL_PORT: ${VIRTUAL_PORT}
+      VIRTUAL_HOST: ${VIRTUAL_HOST}
+      LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
+      LETSENCRYPT_EMAIL: ${LETSENCRYPT_EMAIL}
+      DB_TYPE: postgresdb
+      DB_POSTGRESDB_HOST: n8n-postgres
+      DB_POSTGRESDB_PORT: 5432
+      DB_POSTGRESDB_DATABASE: ${POSTGRES_DB}
+      DB_POSTGRESDB_USER: ${POSTGRES_USER}
+      DB_POSTGRESDB_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - n8n-data:/home/node/.n8n
+    networks:
+      - n8n-network
+      - letsencrypt-network
+  n8n-qdrant:
+    container_name: n8n-qdrant
+    image: qdrant/qdrant
+    restart: unless-stopped
+    logging: *default-logging
+    volumes:
+      - n8n-qdrant:/qdrant/storage
+    networks:
+      - n8n-network
+volumes:
+  n8n-data:
+    name: n8n-data
+  n8n-qdrant:
+    name: n8n-qdrant
+networks:
+  n8n-network:
+    name: n8n-network
+  letsencrypt-network:
+    external: true

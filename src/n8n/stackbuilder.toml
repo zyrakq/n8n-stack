@@ -1,6 +1,27 @@
 [paths]
 environments_path = "./environments"
-extensions_dirs = []
+extensions_dirs = [ "extensions" ]
+
+[build]
+extensions = [
+    "postgresql",
+    "qdrant",
+]
+
+[build.combos]
+"postgresql+qdrant" = ["postgresql", "qdrant"]
 
 [build.environments]
-available = ["devcontainer", "forwarding", "letsencrypt", "step-ca"]
+available = ["forwarding", "letsencrypt", "step-ca"]
+
+[build.environments.forwarding]
+extensions = ["postgresql", "qdrant"]
+combos = ["postgresql+qdrant"]
+
+[build.environments.letsencrypt]
+extensions = ["postgresql", "qdrant"]
+combos = ["postgresql+qdrant"]
+
+[build.environments.step-ca]
+extensions = ["postgresql", "qdrant"]
+combos = ["postgresql+qdrant"]

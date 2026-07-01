@@ -1,0 +1,29 @@
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: ${LOG_MAX_SIZE:-10m}
+    max-file: ${LOG_MAX_FILE:-3}
+    compress: ${LOG_COMPRESS:-true}
+services:
+  n8n:
+    container_name: n8n
+    image: ${IMAGE:-n8nio/n8n:latest}
+    restart: unless-stopped
+    logging: *default-logging
+    environment:
+      N8N_DIAGNOSTICS_ENABLED: ${N8N_DIAGNOSTICS_ENABLED:-false}
+      N8N_PERSONALIZATION_ENABLED: ${N8N_PERSONALIZATION_ENABLED:-false}
+      N8N_ENCRYPTION_KEY: ${N8N_ENCRYPTION_KEY:-}
+      N8N_USER_MANAGEMENT_JWT_SECRET: ${N8N_USER_MANAGEMENT_JWT_SECRET:-}
+    volumes:
+      - n8n-data:/home/node/.n8n
+    networks:
+      - n8n-network
+    ports:
+      - 5678:5678
+volumes:
+  n8n-data:
+    name: n8n-data
+networks:
+  n8n-network:
+    name: n8n-network
