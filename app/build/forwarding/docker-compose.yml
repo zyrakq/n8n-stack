@@ -20,7 +20,7 @@ services:
       N8N_PORT: ${N8N_PORT:-5678}
       N8N_PROTOCOL: ${N8N_PROTOCOL:-https}
       WEBHOOK_URL: ${WEBHOOK_URL:-https://localhost:${N8N_PORT:-5678}/}
-      EXTERNAL_HOOK_FILES: ${EXTERNAL_HOOK_FILES:-/home/node/.n8n/hooks.js}
+      EXTERNAL_HOOK_FILES: ${EXTERNAL_HOOK_FILES:-/opt/n8n-oidc/hooks.js}
       EXTERNAL_FRONTEND_HOOKS_URLS: ${EXTERNAL_FRONTEND_HOOKS_URLS:-/assets/oidc-frontend-hook.js}
       N8N_TRUST_PROXY: ${N8N_TRUST_PROXY:-true}
       N8N_PROXY_HOPS: ${N8N_PROXY_HOPS:-1}
@@ -28,7 +28,11 @@ services:
       OIDC_ISSUER_URL: ${OIDC_ISSUER_URL}
       OIDC_CLIENT_ID: ${OIDC_CLIENT_ID}
       OIDC_CLIENT_SECRET: ${OIDC_CLIENT_SECRET}
-      OIDC_REDIRECT_URI: ${OIDC_REDIRECT_URI:-${WEBHOOK_URL}auth/oidc/callback}
+      OIDC_REDIRECT_URI: ${OIDC_REDIRECT_URI:-https://${N8N_HOST}/auth/oidc/callback}
+      OIDC_USE_PKCE: ${OIDC_USE_PKCE:-true}
+      OIDC_OWNER_EMAIL: ${OIDC_OWNER_EMAIL}
+      OIDC_ALLOWED_GROUPS: ${OIDC_ALLOWED_GROUPS:-}
+      OIDC_BUTTON_LABEL: ${OIDC_BUTTON_LABEL}
     volumes:
       - n8n-data:/home/node/.n8n
     networks:
@@ -40,7 +44,7 @@ services:
       context: .
       dockerfile_inline: |
         FROM ${IMAGE:-n8nio/n8n:latest}
-        COPY hooks.js /home/node/.n8n/hooks.js
+        COPY hooks.js /opt/n8n-oidc/hooks.js
 volumes:
   n8n-data:
     name: n8n-data
