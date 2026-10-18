@@ -7,7 +7,7 @@ x-logging: &default-logging
 services:
   n8n:
     container_name: n8n
-    image: ${IMAGE:-n8nio/n8n:latest}
+    image: n8n
     restart: unless-stopped
     logging: *default-logging
     environment:
@@ -20,7 +20,7 @@ services:
       N8N_HOST: ${N8N_HOST}
       N8N_PROTOCOL: ${N8N_PROTOCOL:-https}
       N8N_EDITOR_BASE_URL: ${N8N_EDITOR_BASE_URL:-${N8N_PROTOCOL}://${N8N_HOST}}
-      WEBHOOK_URL: ${WEBHOOK_URL:-${N8N_PROTOCOL}://${N8N_HOST}/}
+      N8N_WEBHOOK_URL: ${N8N_WEBHOOK_URL:-${N8N_PROTOCOL}://${N8N_HOST}/}
       VIRTUAL_PORT: ${VIRTUAL_PORT}
       VIRTUAL_HOST: ${VIRTUAL_HOST}
       LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}
@@ -29,7 +29,7 @@ services:
       EXTERNAL_FRONTEND_HOOKS_URLS: ${EXTERNAL_FRONTEND_HOOKS_URLS:-/assets/oidc-frontend-hook.js}
       N8N_TRUST_PROXY: ${N8N_TRUST_PROXY:-true}
       N8N_PROXY_HOPS: ${N8N_PROXY_HOPS:-1}
-      N8N_ADDITIONAL_NON_UI_ROUTES: $PN8N_ADDITIONAL_NON_UI_ROUTES:-auth}
+      N8N_ADDITIONAL_NON_UI_ROUTES: ${N8N_ADDITIONAL_NON_UI_ROUTES:-auth}
       OIDC_ISSUER_URL: ${OIDC_ISSUER_URL}
       OIDC_CLIENT_ID: ${OIDC_CLIENT_ID}
       OIDC_CLIENT_SECRET: ${OIDC_CLIENT_SECRET}
@@ -44,7 +44,6 @@ services:
       - n8n-network
       - letsencrypt-network
     build:
-      image: n8n
       context: .
       dockerfile_inline: |
         FROM ${IMAGE:-n8nio/n8n:latest}

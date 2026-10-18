@@ -7,7 +7,7 @@ x-logging: &default-logging
 services:
   n8n:
     container_name: n8n
-    image: ${IMAGE:-n8nio/n8n:latest}
+    image: n8n
     restart: unless-stopped
     logging: *default-logging
     environment:
@@ -19,12 +19,12 @@ services:
       N8N_USER_MANAGEMENT_JWT_SECRET: ${N8N_USER_MANAGEMENT_JWT_SECRET:-}
       N8N_PORT: ${N8N_PORT:-5678}
       N8N_PROTOCOL: ${N8N_PROTOCOL:-https}
-      WEBHOOK_URL: ${WEBHOOK_URL:-https://localhost:${N8N_PORT:-5678}/}
+      N8N_WEBHOOK_URL: ${N8N_WEBHOOK_URL:-https://localhost:${N8N_PORT:-5678}/}
       EXTERNAL_HOOK_FILES: ${EXTERNAL_HOOK_FILES:-/opt/n8n-oidc/hooks.js}
       EXTERNAL_FRONTEND_HOOKS_URLS: ${EXTERNAL_FRONTEND_HOOKS_URLS:-/assets/oidc-frontend-hook.js}
       N8N_TRUST_PROXY: ${N8N_TRUST_PROXY:-true}
       N8N_PROXY_HOPS: ${N8N_PROXY_HOPS:-1}
-      N8N_ADDITIONAL_NON_UI_ROUTES: $PN8N_ADDITIONAL_NON_UI_ROUTES:-auth}
+      N8N_ADDITIONAL_NON_UI_ROUTES: ${N8N_ADDITIONAL_NON_UI_ROUTES:-auth}
       OIDC_ISSUER_URL: ${OIDC_ISSUER_URL}
       OIDC_CLIENT_ID: ${OIDC_CLIENT_ID}
       OIDC_CLIENT_SECRET: ${OIDC_CLIENT_SECRET}
@@ -40,7 +40,6 @@ services:
     ports:
       - ${N8N_PORT:-5678}:${N8N_PORT:-5678}
     build:
-      image: n8n
       context: .
       dockerfile_inline: |
         FROM ${IMAGE:-n8nio/n8n:latest}
