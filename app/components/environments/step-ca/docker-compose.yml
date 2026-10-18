@@ -1,6 +1,9 @@
 services:
   n8n:
     environment:
+      N8N_HOST: ${N8N_HOST}
+      N8N_PROTOCOL: ${N8N_PROTOCOL:-https}
+      WEBHOOK_URL: ${WEBHOOK_URL:-https://${VIRTUAL_HOST}/}
       VIRTUAL_PORT: ${VIRTUAL_PORT}
       VIRTUAL_HOST: ${VIRTUAL_HOST}
       LETSENCRYPT_HOST: ${LETSENCRYPT_HOST}

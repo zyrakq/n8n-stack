@@ -6,10 +6,13 @@ extensions_dirs = [
 ]
 
 [build]
+skip_base_generation = true
+copy_additional_files = true
 extensions = [
     "pgrust",
     "postgresql",
     "qdrant",
+    "oidc"
 ]
 
 [build.combos]
@@ -20,10 +23,10 @@ extensions = [
 available = ["forwarding", "letsencrypt", "step-ca"]
 
 [build.environments.forwarding]
-extensions = []
+extensions = ["oidc"]
 
 [build.environments.letsencrypt]
-extensions = []
+extensions = ["oidc"]
 
 [build.environments.step-ca]
-extensions = []
+extensions = ["oidc"]
