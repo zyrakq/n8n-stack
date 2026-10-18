@@ -6,22 +6,24 @@ x-logging: &default-logging
     compress: ${LOG_COMPRESS:-true}
 
 services:
-  n8n-postgres:
-    container_name: n8n-postgres
-    image: postgres:16-alpine
+  n8n-db:
+    container_name: n8n-db
+    image: postgres:alpine
     restart: unless-stopped
     logging: *default-logging
     environment:
+      TZ: ${TZ:-Etc/UTC}
+      POSTGRES_DB: ${POSTGRES_DB}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_INITDB_ARGS: ${POSTGRES_INITDB_ARGS}
     volumes:
-      - n8n-db:/var/lib/postgresql/data
+      - n8n-db:/var/lib/postgresql
     healthcheck:
-      test: ['CMD-SHELL', 'pg_isready -h localhost -U ${POSTGRES_USER} -d ${POSTGRES_DB}']
+      test: ["CMD-SHELL", "/bin/sh", "-c", "exec pg_isready -h 127.0.0.1"]
       interval: 5s
       timeout: 5s
-      retries: 10
+      retries: 5
     networks:
       - n8n-network
 

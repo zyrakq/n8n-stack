@@ -1,27 +1,29 @@
 [paths]
 environments_path = "./environments"
-extensions_dirs = [ "extensions" ]
+extensions_dirs = [
+    "extensions/database",
+    "extensions"
+]
 
 [build]
 extensions = [
+    "pgrust",
     "postgresql",
     "qdrant",
 ]
 
 [build.combos]
+"pgrust+qdrant" = ["pgrust", "qdrant"]
 "postgresql+qdrant" = ["postgresql", "qdrant"]
 
 [build.environments]
 available = ["forwarding", "letsencrypt", "step-ca"]
 
 [build.environments.forwarding]
-extensions = ["postgresql", "qdrant"]
-combos = ["postgresql+qdrant"]
+extensions = []
 
 [build.environments.letsencrypt]
-extensions = ["postgresql", "qdrant"]
-combos = ["postgresql+qdrant"]
+extensions = []
 
 [build.environments.step-ca]
-extensions = ["postgresql", "qdrant"]
-combos = ["postgresql+qdrant"]
+extensions = []
